@@ -1,0 +1,27 @@
+upstream test_server {
+  server unix:/home/School/gunicorn.sock fail_timeout=300s;
+}
+
+server {
+    listen 80;
+    server_name 139.59.79.78;
+    location = /favicon.ico { access_log off; log_not_found off; }
+
+    location /media  {
+        root /home/School/media;
+    }
+    location /static/ {
+        root /home/School;
+    }
+    location / {
+    	#proxy_set_header Host $host;
+        include proxy_params;
+
+        proxy_connect_timeout 10080s;
+        proxy_send_timeout 10080;
+        proxy_read_timeout 10080;
+       	
+        proxy_pass http://unix:/home/School/gunicorn.sock;
+        #proxy_pass  http://0.0.0.0:9001/;
+    }
+}
