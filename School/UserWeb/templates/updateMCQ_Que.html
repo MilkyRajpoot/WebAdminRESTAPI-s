@@ -1,0 +1,189 @@
+
+
+
+    {% block title %}{% endblock %}
+    
+    {% block content %}
+        
+    
+    <style>
+    body {
+        font-family: "Lato", sans-serif;
+    }
+    
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MCQ</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+</head>
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" style="color: white">NJMS User Info</a>
+            <!-- <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button -->
+            ><!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                    </div> -->
+                </div>
+            </form>
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item">{{ code }}</a>
+                        <a class="dropdown-item" href="/home?q={{ code }}">Home</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'userlogin' %}">Login/Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+    <div class="container">
+        <div class="col-md-10 offset-md-1 mt-5">
+            <div class="jumbotron">
+                <h1 class="display-4">MCQ's Questions</h1>
+                
+                <hr class="my-4">
+                
+                <form method = "post" autocomplete="off" enctype="multipart/form-data"> 
+                    <fieldset> 
+                    {% csrf_token %} 
+                    <label for="MCQPost_id">Quiz Topic : </label> 
+                    <input id="MCQPost_id" class="form-control" name="MCQPost_id" value={{ objs }} readonly> 
+                    <br>
+                    <label for="que_title">Enter Question : </label> 
+                    <textarea  id="que_title" rows="5" cols="10" class="form-control" name="que_title" required>{{ obj.que_title }}</textarea>
+                    <br>
+                    <input type="checkbox" id="same" name="same" onclick="onlyOne(this)" onchange="addressFunction()"/>
+                    <label for="choice_1">Answer-Option Choice-1 : </label> 
+                    <textarea id="choice_1" rows="2" cols="5" class="form-control" name="choice_1" required>{{ obj.choice_1 }}
+                    </textarea> 
+                    <br>
+                    <input type="checkbox" id="same1" name="same" onclick="onlyOne(this)" onchange="addressFunction()"/>
+                    <label for="choice_2">Answer-Option Choice-2 : </label> 
+                    <textarea id="choice_2" rows="2" cols="5"class="form-control" name="choice_2" required>{{ obj.choice_2 }} 
+                    </textarea><br>
+                    <input type="checkbox" id="same2" name="same" onclick="onlyOne(this)" onchange="addressFunction()"/>
+                    <label for="choice_3">Answer-Option Choice-3 : </label> 
+                    <textarea id="choice_3" rows="2" cols="5" class="form-control" name="choice_3" required>{{ obj.choice_3 }} 
+                    </textarea><br>
+                    <input type="checkbox" id="same3" name="same" onclick="onlyOne(this)" onchange="addressFunction()"/> 
+                    <label for="choice_4">Answer-Option Choice-4 :</label> 
+                    <textarea id="choice_4" rows="2" cols="5" class="form-control" name="choice_4" required> {{ obj.choice_4 }}
+                    </textarea><br>
+                </fieldset>
+                    
+                    <fieldset> 
+                        <label for="correct_answer">Correct Answer :</label><br>
+                        <label for="correct_answer">Choose any-one Checkbox that is the Answer of Question</label>
+                        <br>
+                         
+                        <textarea id="correct_answer" rows="2" cols="5"class="form-control" name="correct_answer" value={{ obj.correct_answer }} readonly required></textarea>
+                        <br>
+                    </fieldset>
+                    <br>
+                    <button type="submit">SAVE</button> 
+                </form> 
+            </div>
+        </div>
+    </div>
+    // JavaScript Code 
+    <script> 
+    function addressFunction() 
+    { 
+      if (document.getElementById('same').checked) 
+      { 
+        document.getElementById('correct_answer').value=document. 
+                 getElementById('choice_1').value; 
+      }
+      else if (document.getElementById('same1').checked) 
+      { 
+        document.getElementById('correct_answer').value=document. 
+                 getElementById('choice_2').value; 
+      }
+      else if (document.getElementById('same2').checked) 
+      { 
+        document.getElementById('correct_answer').value=document. 
+                 getElementById('choice_3').value; 
+      }
+      else if (document.getElementById('same3').checked) 
+      { 
+        document.getElementById('correct_answer').value=document. 
+                 getElementById('choice_4').value; 
+      } 
+          
+      else
+      { 
+        document.getElementById('correct_answer').value=""; 
+      } 
+    } 
+    </script> 
+    <script>
+        function onlyOne(checkbox) {
+            var checkboxes = document.getElementsByName('same')
+            checkboxes.forEach((item) => {
+                if (item !== checkbox) item.checked = false
+            })
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}

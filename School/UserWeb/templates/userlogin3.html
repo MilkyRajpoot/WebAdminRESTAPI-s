@@ -1,0 +1,66 @@
+
+
+{% block content %}
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 2px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #38b6cd;
+    color: white;
+    padding: 12px ;
+    margin: auto;
+    border: none;
+    /*width: 30%;*/
+    /*width: 150px;*/
+    text-align: center;
+    margin:0 auto;
+    max-width: 500px;
+}
+
+
+.container {
+    padding: 16px;
+ 	max-width: 500px;
+ 	margin: auto;
+}
+
+
+</style>
+
+<form  action="" method="post">
+	{% csrf_token %}
+  <div class="container">
+    <br>
+    <br>
+    <h2 style="text-align:center"><b>Login for NJMS Teacher's</b></h2>
+    <h2 style="text-align:center"><b>Delete MCQ's Answer and Result</b></h2>
+    <!-- <hr> -->
+                
+                <form method = "post" autocomplete="off" enctype="multipart/form-data"> 
+                    {% csrf_token %} 
+                    <b> {{ form.as_p }} 
+                    </b>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    <button type="submit">Submit</button> 
+                </form> 
+            </div>
+</form>
+{% endblock %}

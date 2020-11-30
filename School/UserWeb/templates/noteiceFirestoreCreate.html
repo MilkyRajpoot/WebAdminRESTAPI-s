@@ -1,0 +1,331 @@
+
+
+
+    {% block title %}{% endblock %}
+    
+    {% block content %}
+        
+    
+    <style>
+    body {
+        font-family: "Lato", sans-serif;
+    }
+    
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>New Note</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+</head>
+<body>
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" style="color: white">New Note</a>
+            <!-- <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button -->
+            ><!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                    </div> -->
+                </div>
+            </form>
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <!-- <a class="dropdown-item">{{ username }}</a> -->
+                        <a class="dropdown-item">{{ query }}</a>
+                        <a class="dropdown-item" href="{% url 'TaskHome' %}">Teacher's Home</a>
+                        <a class="dropdown-item" href="/Taskhome/alllistNoteiceNonAuth?q={{ query }}">All Notes List </a>
+                        <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{% url 'authallMCQList' %}">Teacher's Login/Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    <div class="container">
+        <div class="col-md-10 offset-md-1 mt-5">
+            <div class="jumbotron">
+                <h1 class="display-4">Add Note's</h1>
+                
+                <hr class="my-4">
+                
+                <form method = "post" autocomplete="off" enctype="multipart/form-data"> 
+                    {% csrf_token %} 
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- {{ form.as_p }} -->
+                    <!-- <label style="color:red">{{ form.title.errors }}</label> <br>
+                    <label style="color:red">{{ form.subject.errors }}</label> <br>
+                    <label style="color:red">{{ form.clas.errors }}</label> <br>
+                    <label style="color:red">{{ form.description.errors }}</label> <br>
+                    <label style="color:red">{{ form.title.errors }}</label> <br> -->
+                                     <!-- {{ form.code }}  -->
+                    <label for="school_code">School Code: </label> 
+                    <input id="school_code" class="form-control" type="text" name="school" value={{ query }} readonly> <br>
+                    <label for="clas">Choose Class :</label>
+                      <!-- <select name="class" id="clas" class="form-control" >
+                        <option value="-----------">-----------</option>
+                        <option value="PREP">PREP</option>
+                        <option value="LKG">LKG</option>
+                        <option value="UKG">UKG</option>
+                        <option value="I">I</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                        <option value="V">V</option>
+                        <option value="VI">VI</option>
+                        <option value="VII">VII</option>
+                        <option value="VIII">VIII</option>
+                        <option value="IX">IX</option>
+                        <option value="X">X</option>
+                        <option value="XI">XI</option>
+                        <option value="XII">XII</option>
+                      </select> -->
+                      <br>
+                      <input type="checkbox" onclick="toggle(this);" />  --  Check all Class<br />
+
+                      <input type="checkbox" name="classP" value="PREP" />  --  Class PREP<br />
+                      <input type="checkbox" name="classU" value="UKG" />  --  Class UKG<br />
+                      <input type="checkbox" name="classL" value="LKG" />  --  Class LKG<br />
+                      <input type="checkbox" name="classI" value="I" />  --  Class I<br />
+                      <input type="checkbox" name="classII" value="II" />  --  Class II<br />
+                      <input type="checkbox" name="classIII" value="III" />  --  Class III<br />
+                      <input type="checkbox" name="classIV" value="IV" />  --  Class IV<br />
+                      <input type="checkbox" name="classV" value="V" />  --  Class V<br />
+                      <input type="checkbox" name="classVI" value="VI" />  --  Class VI<br />
+                      <input type="checkbox" name="classVII" value="VII" />  --  Class VII<br />
+                      <input type="checkbox" name="classVIII" value="VIII" />  --  Class VIII<br />
+                      <input type="checkbox" name="classIX" value="IX" />  --  Class IX<br />
+                      <input type="checkbox" name="classX" value="X" />  --  Class X<br />
+                      <input type="checkbox" name="classXI" value="XI" />  --  Class XI<br />
+                      <input type="checkbox" name="classXII" value="XII" />  --  Class XII<br />
+                      <br>
+                      <br>                    <!-- <label for="title">Title : </label> 
+                    <input id="title" class="form-control" type="text" name="title" required> <br> -->
+                  
+                    <!-- <textarea id="description" rows="5" cols="10" class="form-control" name="description" required></textarea> <br> -->
+
+                    PDF URL (Itself Generate while you Upload File) 
+                    <!-- <p name='image'>{{ form.que_Image}}</p> -->
+                    <input type="file" id="myText" class="form-control" name="que_Image"><br>
+
+                    <!-- <label>Select File</label>  -->
+                    <!-- <input id="photo"class="file" type="file" name="mainimage"  accept="image/*" -->
+                                       <!-- value="" onchange="getfile()" > -->
+
+                    <!-- <button onclick="myFunction()">Try it</button> -->
+                    <!-- <label>Progress Bar (File Uploading)</label> -->
+                    <!-- <progress value="0" id="uploader" max="100">0%</progress><br><br>  -->
+                    
+                    
+                    <!-- // submit the chosen file  -->
+                    <button id="submit_link"type="submit" name="button">Submit Data</button>
+
+                    <!-- {{ form.as_p}} -->
+                    <!-- <label>Select a file:</label> -->
+                    <!-- <input type="file" id="pdf_upload" name="pdf_upload"> -->
+                    <!-- Note {{ form.Notes }}  <br> -->
+                    {% if messages %}
+                        {% for message in messages %}
+                         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+                    <!-- <input type="submit" value="SAVE" name="submit"> 
+
+                    <input type="text" name="nombre" id="name" value ="hello.wav" /><br /><br />
+                    <button id="get_url">Get url file</button>
+                    <p id="response"></p> -->
+
+                    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-storage.js"></script>
+                    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script> 
+                    <!-- <button type="submit">SAVE</button>  -->
+                </form> 
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // Listen for click on toggle checkbox
+          function toggle(source) {
+          var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          for (var i = 0; i < checkboxes.length; i++) {
+              if (checkboxes[i] != source)
+                  checkboxes[i].checked = source.checked;
+          }
+      }
+    </script>
+    <script>
+          var firebaseConfig = {
+            apiKey: "AIzaSyA9xKw5AcbLtBt1tYzzeVbq8X2fQRlnzMs",
+            authDomain: "njms-2e633.firebaseapp.com",
+            databaseURL: "https://njms-2e633.firebaseio.com",
+            projectId: "njms-2e633",
+            storageBucket: "gs://njms-2e633.appspot.com",
+            // messagingSenderId: "851XXXXXXXX7",
+            // appId: "1:851XXXXXXXX7:web:6fXXXXXXXXXX866"
+          };
+
+          firebase.initializeApp(firebaseConfig);
+        </script>
+        <script type="text/javascript"> 
+       var selectedFile; 
+      function getfile() 
+      { 
+          var pic = document.getElementById("photo"); 
+  
+           // selected file is that file which user chosen by html form 
+          selectedFile = pic.files[0]; 
+  
+           // make save button disabled for few seconds that has id='submit_link' 
+          document.getElementById('submit_link').setAttribute('disabled', 'true'); 
+          myfunction(); // call below written function 
+      } 
+      function myfunction() 
+      { 
+          // select unique name for everytime when image uploaded 
+          // Date.now() is function that give current timestamp 
+          var name="123"+Date.now(); 
+  
+          // make ref to your firebase storage and select images folder 
+          var storageRef = firebase.storage().ref('/Noteice/'+ name+'.jpeg'); 
+  
+          // put file to firebase  
+          var uploadTask = storageRef.put(selectedFile); 
+          var desertRef = storageRef.child('/Noteice/'+ name+'.jpeg');
+  
+          // all working for progress bar that in html 
+          // to indicate image uploading... report 
+          uploadTask.on('state_changed', function(snapshot){ 
+            var progress =  
+             (snapshot.bytesTransferred / snapshot.totalBytes) * 100; 
+              var uploader = document.getElementById('uploader'); 
+              uploader.value=progress; 
+              switch (snapshot.state) { 
+                case firebase.storage.TaskState.PAUSED: 
+                  console.log('Upload is paused'); 
+                  break; 
+                case firebase.storage.TaskState.RUNNING: 
+                  console.log('Upload is running');
+                  console.log('File available at', desertRef);  
+                  break; 
+              } 
+          }, function(error) {console.log(error); 
+          }, function myFunction() { 
+  
+               // get the uploaded image url back 
+               uploadTask.snapshot.ref.getDownloadURL().then( 
+                function(downloadURL) { 
+  
+               // You get your url from here 
+                console.log('File available at', downloadURL); 
+                var z = downloadURL;
+                document.getElementById("myText").value = z;
+  
+              // print the image url  
+               console.log(downloadURL); 
+              document.getElementById('submit_link').removeAttribute('disabled'); 
+            }); 
+          }); 
+      }; 
+ </script>
+        <!-- <script>
+        //// CHOICE /////
+        var files = [];
+        document.getElementById("files").addEventListener("change", function(e) {
+          files = e.target.files;
+        });
+
+        ///// SEND FILES //////
+        document.getElementById("send").addEventListener("click", function() {
+
+          if (files.length != 0) {
+            for (let i = 0; i < files.length; i++) {
+              var storage = firebase.storage().ref('Notes/' + files[i].name);
+              var upload = storage.put(files[i]);
+              upload.on("state_changed", function progress(snapshot) {
+                  var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                  document.getElementById("progress").value = percentage;
+                },
+
+                function error() {alert("Error uploading file.");},
+
+                function complete() {document.getElementById( "uploading").innerHTML += `${files[i].name} uploaded <br />`;}); }
+                
+            } else {alert("No file chosen."); }
+        });
+        ////////////////////////////////////
+
+        // GET URL ////////////////////
+        document.getElementById("get_url").addEventListener("click", function() {
+          var get_url_file = document.getElementById("name").value;
+          var storage = firebase.storage().ref(get_url_file);
+          storage.getDownloadURL().then(function(url) {document.getElementById("response").innerHTML += `${url}  <br />`; })
+                                                 .catch(function(error) {alert("Error encountered."); });
+
+        });
+        ////////////////////////////////////
+        </script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}

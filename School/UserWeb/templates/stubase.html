@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Student Portal{% endblock %}</title>
+</head>
+<body>
+  {% csrf_token %}
+  <header>
+    <br>
+    <br>
+   <h2 style="text-align:center"><b>Student Portal</b></h2>
+    {% if user.is_authenticated %}
+     
+    {% else %}
+  
+    {% endif %}
+  </header>
+  <hr>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+  
+  <footer>
+    <hr>
+  </footer>
+</body>
+</html>

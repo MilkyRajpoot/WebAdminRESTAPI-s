@@ -1,0 +1,133 @@
+
+  
+    {% block title %}{% endblock %}
+    
+    {% block content %}
+        
+    
+    <style>
+    body {
+        font-family: "Lato", sans-serif;
+    }
+    
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+    
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    </style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Update</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+</head>
+
+<body>
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" style="color: white">Student's Feedback</a>
+            <!-- <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button -->
+            ><!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                    </div> -->
+                </div>
+            </form>
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <!-- <a class="dropdown-item">{{ query }}</a> -->
+                        <a class="dropdown-item" href="{% url 'TaskHome' %}">Home</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'authFeedLogin_before_allFeedList' %}">Login/Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+     
+     
+    <div class="container">
+        <div class="col-md-10 offset-md-1 mt-5">
+            <div class="jumbotron">
+                <h1 class="display-4">Update Task</h1>
+                <hr class="my-4">
+                
+                <form method = "post" autocomplete="off" enctype="multipart/form-data"> 
+                {% csrf_token %} 
+                    <label for="school_code">School: </label> 
+                    <input id="school_code" class="form-control" type="text" name="school_code" value={{ object_list.school }} readonly> <br>
+                    <label for="userid">User-Id: </label> 
+                    <input id="userid" class="form-control" type="text" name="userid" value={{ object_list.user }} readonly> <br>
+                    <label for="feedback">Feedback : </label>
+                    <textarea id="feedback" class="form-control" name="feedback" rows="4" cols="50" readonly>{{ object_list.msg }}</textarea> 
+                    <!-- <input id="msg"  type="text" name="msg" value={{ object_list.msg }} readonly> <br> -->
+                    <label for="reply">Reply : </label> 
+                    <textarea id="reply" class="form-control" name="reply" rows="4" cols="50"></textarea>
+                    <br>
+                    <br>
+                    <!-- <input id="reply" class="form-control" type="text" name="reply"> <br> -->
+                <button type="submit">UPDATE</button> 
+                <input type="button" onclick="location.href='/feedback/allFeedback?q={{ query }}';" value="Cancel" />
+                </form>
+               
+            </div>
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+{% endblock %}
